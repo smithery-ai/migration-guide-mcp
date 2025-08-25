@@ -3,6 +3,7 @@
  */
 
 export { validateSmitheryYaml, YamlValidationToolSchema, type SmitheryYamlValidationParams } from "./yaml-validation.js";
+export { validatePackageJson, PackageJsonValidationToolSchema, type PackageJsonValidationParams } from "./package-json-validation.js";
 
 // Migration overview
 export { 

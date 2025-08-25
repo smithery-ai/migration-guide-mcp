@@ -197,7 +197,7 @@ function generateSmitheryCLIOverview(params: { includeBackwardCompatibility: boo
     nextSteps: [
       "Use 'create_migration_template' tool with mode 'ts-smithery-cli'",
       "Use 'generate_smithery_yaml' tool for smithery.yaml configuration",
-      "Update package.json with required Smithery CLI scripts and module field"
+      "Use 'validate_package_json' tool with migrationPath 'ts-smithery-cli' to ensure all required scripts and dependencies are present"
     ]
   };
 }
@@ -271,7 +271,7 @@ function generateTypeScriptContainerOverview(params: { includeBackwardCompatibil
       "2. Create custom Dockerfile with Node.js and build steps",
       "3. Update package.json with Express dependencies",
       "4. Create smithery.yaml with container runtime configuration",
-      "5. Test locally: 'npm run build && docker build -t server . && docker run -p 8081:8081 server'",
+      "5. Test locally: 'npm run build && docker build -t server . && docker run -p 8081:8081 -e PORT=8081 server'",
       "6. Push changes to your GitHub repository",
       "7. Wait a few minutes for auto-deploy, or manually trigger deployment from your Smithery server dashboard if it doesn't start automatically",
       "8. Smithery builds and deploys your custom container"
@@ -281,6 +281,7 @@ function generateTypeScriptContainerOverview(params: { includeBackwardCompatibil
       "Custom Docker environment configuration",
       "Advanced CORS and security configurations",
       "Per-request configuration parsing from URL parameters",
+      "IMPORTANT: Server must listen on process.env.PORT (Smithery provides this, defaults to 8081)",
       ...(includeBackwardCompatibility ? ["STDIO backward compatibility with TRANSPORT env var"] : []),
     ],
     nextSteps: [
@@ -363,7 +364,7 @@ function generatePythonContainerOverview(params: { includeBackwardCompatibility:
       `${needsSessionConfig ? '3' : '2'}. Create custom Dockerfile with Python and dependency management`,
       `${needsSessionConfig ? '4' : '3'}. Update pyproject.toml with FastMCP and required dependencies`,
       `${needsSessionConfig ? '5' : '4'}. Create smithery.yaml with container runtime configuration`,
-      `${needsSessionConfig ? '6' : '5'}. Test locally: 'uv sync && docker build -t server . && docker run -p 8081:8081 server'`,
+      `${needsSessionConfig ? '6' : '5'}. Test locally: 'uv sync && docker build -t server . && docker run -p 8081:8081 -e PORT=8081 server'`,
       `${needsSessionConfig ? '7' : '6'}. Push changes to your GitHub repository`,
       `${needsSessionConfig ? '8' : '7'}. Wait a few minutes for auto-deploy, or manually trigger deployment from your Smithery server dashboard if it doesn't start automatically`
     ],
@@ -372,6 +373,7 @@ function generatePythonContainerOverview(params: { includeBackwardCompatibility:
       ...(needsSessionConfig ? ["Per-request configuration access through middleware"] : ["No middleware needed if no session configuration required"]),
       ...(includeBackwardCompatibility ? ["STDIO backward compatibility with TRANSPORT env var"] : []),
       "CORS handling for browser-based MCP clients",
+      "IMPORTANT: Server must listen on int(os.environ.get('PORT', 8081)) - Smithery provides PORT env var",
     ],
     nextSteps: [
       "Use 'create_migration_template' tool with mode 'py-custom-container'",

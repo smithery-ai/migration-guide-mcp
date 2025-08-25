@@ -2,6 +2,8 @@ import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { 
   YamlValidationToolSchema, 
   validateSmitheryYaml,
+  PackageJsonValidationToolSchema,
+  validatePackageJson,
   MigrationOverviewToolSchema,
   generateMigrationOverview,
   formatMigrationOverview,
@@ -170,6 +172,40 @@ export default function createServer(
           content: [{
             type: "text",
             text: `Error validating smithery.yaml: ${error instanceof Error ? error.message : String(error)}`
+          }]
+        };
+      }
+    }
+  );
+
+  // Package.json Validation Tool
+  server.registerTool(
+    PackageJsonValidationToolSchema.name,
+    {
+      title: "Package.json Validator",
+      description: PackageJsonValidationToolSchema.description,
+      inputSchema: PackageJsonValidationToolSchema.inputSchema
+    },
+    async ({ packageJsonContent, migrationPath, filePath }) => {
+      try {
+        const validation = await validatePackageJson({
+          packageJsonContent,
+          migrationPath,
+          filePath,
+        });
+
+        return {
+          content: [{
+            type: "text",
+            text: validation
+          }]
+        };
+
+      } catch (error) {
+        return {
+          content: [{
+            type: "text",
+            text: `Error validating package.json: ${error instanceof Error ? error.message : String(error)}`
           }]
         };
       }

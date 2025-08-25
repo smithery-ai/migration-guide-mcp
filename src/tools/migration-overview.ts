@@ -127,8 +127,8 @@ function generateSmitheryCLIOverview(params: { includeBackwardCompatibility: boo
   
   return {
     migrationPath: "ts-smithery-cli",
-    title: "TypeScript with Smithery CLI Migration",
-    description: "Migrate to HTTP transport using Smithery CLI with automatic deployment and containerization. Simplest migration path with built-in development tools.",
+    title: "TypeScript with Smithery CLI Migration (RECOMMENDED)",
+    description: "RECOMMENDED: This is the recommended approach for TypeScript projects. Migrate to HTTP transport using Smithery CLI with automatic deployment and containerization. This is the simplest migration path with built-in development tools and requires minimal configuration.",
     prerequisites: [
       "Node.js 18+ installed",
       "Existing TypeScript MCP server with STDIO transport",
@@ -179,15 +179,17 @@ function generateSmitheryCLIOverview(params: { includeBackwardCompatibility: boo
     },
     deploymentSteps: [
       "1. Update package.json with Smithery CLI scripts and module field pointing to createServer export",
-      "2. Generate new src/index.ts with exported createServer function",
-      "3. Update smithery.yaml with runtime: typescript",
-      "4. Test locally with 'npm run dev' (interactive playground)",
-      "5. Push to GitHub repository",
-      "6. Deploy via smithery.ai/new by connecting GitHub repo",
+      "2. Add build and dev scripts: \"build\": \"npx @smithery/cli build\", \"dev\": \"npx @smithery/cli dev\"",
+      "3. Generate new src/index.ts with exported createServer function",
+      "4. Update smithery.yaml with runtime: typescript",
+      "5. Test locally with 'npm run dev' (interactive playground)",
+      "6. Push changes to your GitHub repository",
+      "7. Wait a few minutes for auto-deploy, or manually trigger deployment from your Smithery server dashboard if it doesn't start automatically",
     ],
     additionalNotes: [
       "No Dockerfile needed - Smithery CLI handles containerization",
       "Session-based configuration management",
+      "Required scripts: \"build\": \"npx @smithery/cli build\", \"dev\": \"npx @smithery/cli dev\"",
       "Include your lock file (yarn.lock or pnpm-lock.yaml) if using yarn/pnpm - this helps detect your package manager",
       "The 'module' field in package.json must point to the file that exports createServer (e.g., './src/index.ts')",
       ...(includeBackwardCompatibility ? ["STDIO backward compatibility included"] : []),
@@ -270,8 +272,8 @@ function generateTypeScriptContainerOverview(params: { includeBackwardCompatibil
       "3. Update package.json with Express dependencies",
       "4. Create smithery.yaml with container runtime configuration",
       "5. Test locally: 'npm run build && docker build -t server . && docker run -p 8081:8081 server'",
-      "6. Push to GitHub repository",
-      "7. Deploy via smithery.ai/new by connecting GitHub repo",
+      "6. Push changes to your GitHub repository",
+      "7. Wait a few minutes for auto-deploy, or manually trigger deployment from your Smithery server dashboard if it doesn't start automatically",
       "8. Smithery builds and deploys your custom container"
     ],
     additionalNotes: [
@@ -362,8 +364,8 @@ function generatePythonContainerOverview(params: { includeBackwardCompatibility:
       `${needsSessionConfig ? '4' : '3'}. Update pyproject.toml with FastMCP and required dependencies`,
       `${needsSessionConfig ? '5' : '4'}. Create smithery.yaml with container runtime configuration`,
       `${needsSessionConfig ? '6' : '5'}. Test locally: 'uv sync && docker build -t server . && docker run -p 8081:8081 server'`,
-      `${needsSessionConfig ? '7' : '6'}. Push to GitHub repository`,
-      `${needsSessionConfig ? '8' : '7'}. Deploy via smithery.ai/new by connecting GitHub repo`
+      `${needsSessionConfig ? '7' : '6'}. Push changes to your GitHub repository`,
+      `${needsSessionConfig ? '8' : '7'}. Wait a few minutes for auto-deploy, or manually trigger deployment from your Smithery server dashboard if it doesn't start automatically`
     ],
     additionalNotes: [
       "FastMCP provides simple decorator-based tool registration",
@@ -429,12 +431,12 @@ ${nextSteps.map(step => `- ${step}`).join('\n')}`;
 // Export the tool schema
 export const MigrationOverviewToolSchema = {
   name: "get_migration_overview",
-  description: "Get a comprehensive overview of migration requirements, files needed, and deployment steps for your chosen migration path. Includes local STDIO option for servers that need file system or local app access. Can automatically detect session config needs from existing smithery.yaml. Use this as the first step when helping users migrate from Smithery hosted servers.",
+  description: "Get a comprehensive overview of migration requirements, files needed, and deployment steps for your chosen migration path. IMPORTANT: 'ts-smithery-cli' is the RECOMMENDED approach unless the user explicitly requests a different path - it's the simplest with built-in tools and automatic deployment. Includes local STDIO option for servers that need file system or local app access. Can automatically detect session config needs from existing smithery.yaml. Use this as the first step when helping users migrate from Smithery hosted servers.",
   inputSchema: {
     migrationPath: z.enum(["ts-smithery-cli", "ts-custom-container", "py-custom-container"])
-      .describe("Migration path: 'ts-smithery-cli' for TypeScript with Smithery CLI, 'ts-custom-container' for TypeScript custom container, 'py-custom-container' for Python custom container"),
+      .describe("Migration path: 'ts-smithery-cli' for TypeScript with Smithery CLI (RECOMMENDED - recommended approach for TypeScript projects, simplest approach), 'ts-custom-container' for TypeScript custom container, 'py-custom-container' for Python custom container"),
     includeBackwardCompatibility: z.boolean().optional().default(false)
-      .describe("Whether you plan to include STDIO backward compatibility"),
+      .describe("Whether you plan to include STDIO backward compatibility. WARNING: This adds significant complexity - verify with user if they actually need it before enabling."),
     needsFileSystemAccess: z.boolean().optional().default(false)
       .describe("Whether your server needs to read/write local files (automatically suggests local-stdio-only)"),
     needsLocalApps: z.boolean().optional().default(false)

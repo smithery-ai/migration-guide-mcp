@@ -429,7 +429,7 @@ ${nextSteps.map(step => `- ${step}`).join('\n')}`;
 // Export the tool schema
 export const MigrationOverviewToolSchema = {
   name: "get_migration_overview",
-  description: "Get a comprehensive overview of migration requirements, files needed, and deployment steps for your chosen migration path. Includes local STDIO option for servers that need file system or local app access. Can automatically detect session config needs from existing smithery.yaml.",
+  description: "Get a comprehensive overview of migration requirements, files needed, and deployment steps for your chosen migration path. Includes local STDIO option for servers that need file system or local app access. Can automatically detect session config needs from existing smithery.yaml. Use this as the first step when helping users migrate from Smithery hosted servers.",
   inputSchema: {
     migrationPath: z.enum(["ts-smithery-cli", "ts-custom-container", "py-custom-container"])
       .describe("Migration path: 'ts-smithery-cli' for TypeScript with Smithery CLI, 'ts-custom-container' for TypeScript custom container, 'py-custom-container' for Python custom container"),

@@ -1,0 +1,41 @@
+{
+	"name": "mcp-migration-agent",
+	"version": "1.0.0",
+	"description": "MCP server that helps migrate STDIO MCP servers to HTTP transport",
+	"main": "index.js",
+	"module": "./src/index.ts",
+	"type": "module",
+	"scripts": {
+		"dev": "npx @smithery/cli dev",
+		"build": "npx @smithery/cli build",
+		"start": "node .smithery/index.cjs",
+		"test": "vitest --run",
+		"test:watch": "vitest",
+		"test:coverage": "vitest --coverage"
+	},
+	"keywords": [
+		"mcp",
+		"migration",
+		"stdio",
+		"http",
+		"agent"
+	],
+	"author": "",
+	"license": "ISC",
+	"dependencies": {
+		"@ai-sdk/anthropic": "^2.0.6",
+		"@ai-sdk/openai": "^2.0.19",
+		"@modelcontextprotocol/sdk": "^1.17.3",
+		"ai": "^5.0.22",
+		"dotenv": "^17.2.1",
+		"yaml": "^2.8.1",
+		"zod": "^3.25.46"
+	},
+	"devDependencies": {
+		"@smithery/cli": "^1.2.4",
+		"@types/dotenv": "^6.1.1",
+		"@types/node": "^24.3.0",
+		"tsx": "^4.19.4",
+		"vitest": "^3.2.4"
+	}
+}
